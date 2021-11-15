@@ -1,0 +1,21 @@
+Dockerfile to run uts-server, a micro RFC3161-compliant timestamp server
+written in C [1]. Please see [2] for details on the configuration file
+provided. This is somewhat based on [3] but civetweb is provided via a Debian
+package.
+
+Since Docker containers are not supposed to contain secrets, one must expose
+a directory with cryptographic material for the Timestamp Authority on the host
+machine, e.g. through the VOLUME directive.
+
+It can be tested from a terminal as follows.
+
+    $ docker build -t uts-server:0.2.1 .
+    $ docker run -v /path/to/your/conf:/etc/uts-server -p 2020:2020 \
+        uts-server:0.2.1 -D -c /etc/uts-server/uts.conf
+
+A page should appear at http://localhost:2020 explaining how to use the
+service.
+
+[1] https://github.com/kakwa/uts-server
+[2] https://uts-server.readthedocs.io/en/latest/configure.html
+[3] https://github.com/nicholasamorim/dockerfile-uts-server
